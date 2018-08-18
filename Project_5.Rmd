@@ -1,0 +1,323 @@
+---
+#Course: Data Science Masters
+#Title: Project 5            
+#Tool: Jupyter notebook 
+#Author: Krishna A
+#Date: 12-08-2018 (DD/MM/YYYY)
+
+#Project on application of time series models
+---
+
+rm(list=ls(all=TRUE))
+setwd("C:\\Temp\\acadgild")
+
+data = read.csv('data_stocks.csv',header = T)
+
+data_AAPL = data$NASDAQ.AAPL
+data_ADP = data$NASDAQ.ADP
+data_CBOE = data$NASDAQ.CBOE
+data_CSCO = data$NASDAQ.CSCO
+data_EBAY = data$NASDAQ.EBAY
+
+
+# Creating the Time series Object
+datatimeseries_stocks_AAPL <- ts(data_AAPL,frequency = 12)
+datatimeseries_stocks_ADP <- ts(data_ADP,frequency = 12)
+datatimeseries_stocks_CBOE <- ts(data_CBOE,frequency = 12)
+datatimeseries_stocks_CSCO <- ts(data_CSCO,frequency = 12)
+datatimeseries_stocks_EBAY <- ts(data_EBAY,frequency = 12)
+datatimeseries_stocks_AAPL
+datatimeseries_stocks_ADP
+datatimeseries_stocks_CBOE
+datatimeseries_stocks_CSCO
+datatimeseries_stocks_EBAY
+
+#Plotting
+plot.ts(datatimeseries_stocks_AAPL)
+plot.ts(datatimeseries_stocks_ADP)
+plot.ts(datatimeseries_stocks_CBOE)
+plot.ts(datatimeseries_stocks_CSCO)
+plot.ts(datatimeseries_stocks_EBAY)
+
+#Decomposition
+data_time_series_components_AAPL <- decompose(datatimeseries_stocks_AAPL)
+data_time_series_components_ADP <- decompose(datatimeseries_stocks_ADP)
+data_time_series_components_CBOE <- decompose(datatimeseries_stocks_CBOE)
+data_time_series_components_CSCO <- decompose(datatimeseries_stocks_CSCO)
+data_time_series_components_EBAY <- decompose(datatimeseries_stocks_EBAY)
+plot(data_time_series_components_AAPL)
+plot(data_time_series_components_ADP)
+plot(data_time_series_components_CBOE)
+plot(data_time_series_components_CSCO)
+plot(data_time_series_components_EBAY)
+
+#ACF and PACF of data_NASDAQ.AAPL
+par(mfrow=c(1,3))
+plot.ts(datatimeseries_stocks_AAPL)
+par(mfrow=c(1,2))
+acf(datatimeseries_stocks_AAPL, lag.max=20)
+pacf(datatimeseries_stocks_AAPL, lag.max=20)
+
+library(forecast)
+ndiffs(datatimeseries_stocks_AAPL)
+
+#ACF and PACF of data_NASDAQ.ADP
+par(mfrow=c(1,3))
+plot.ts(datatimeseries_stocks_ADP)
+par(mfrow=c(1,2))
+acf(datatimeseries_stocks_ADP, lag.max=20)
+pacf(datatimeseries_stocks_ADP, lag.max=20)
+
+library(forecast)
+ndiffs(datatimeseries_stocks_ADP)
+
+#ACF and PACF of data_NASDAQ.CBOE
+par(mfrow=c(1,3))
+plot.ts(datatimeseries_stocks_CBOE)
+par(mfrow=c(1,2))
+acf(datatimeseries_stocks_CBOE, lag.max=20)
+pacf(datatimeseries_stocks_CBOE, lag.max=20)
+
+library(forecast)
+ndiffs(datatimeseries_stocks_CBOE)
+
+#ACF and PACF of data_NASDAQ.CSCO
+par(mfrow=c(1,3))
+plot.ts(datatimeseries_stocks_CSCO)
+par(mfrow=c(1,2))
+acf(datatimeseries_stocks_CSCO, lag.max=20)
+pacf(datatimeseries_stocks_CSCO, lag.max=20)
+
+library(forecast)
+ndiffs(datatimeseries_stocks_CSCO)
+
+#ACF and PACF of data_NASDAQ.EBAY
+par(mfrow=c(1,3))
+plot.ts(datatimeseries_stocks_EBAY)
+par(mfrow=c(1,2))
+acf(datatimeseries_stocks_EBAY, lag.max=20)
+pacf(datatimeseries_stocks_EBAY, lag.max=20)
+
+library(forecast)
+ndiffs(datatimeseries_stocks_EBAY)
+
+
+
+# ARIMA
+#Differencing the time series and make it stationary for NASDAQ.AAPL
+par(mfrow=c(1,4))
+plot.ts(datatimeseries_stocks_AAPL,main="Actual Data")
+timeseriesdiff1_AAPL <-  diff(datatimeseries_stocks_AAPL, differences=1)
+plot.ts(timeseriesdiff1_AAPL,main="Data with one difference")
+#Differencing the time series and make it stationary
+timeseriesdiff2_AAPL <- diff(datatimeseries_stocks_AAPL, differences=2)
+plot.ts(timeseriesdiff2_AAPL,main="Data with two differences")
+#Differencing the time series and make it stationary
+timeseriesdiff3_AAPL <- diff(datatimeseries_stocks_AAPL, differences=3)
+plot.ts(timeseriesdiff3_AAPL,main="Data with three differences")
+
+
+#Differencing the time series and make it stationary for NASDAQ.ADP
+par(mfrow=c(1,4))
+plot.ts(datatimeseries_stocks_ADP,main="Actual Data")
+timeseriesdiff1_ADP <-  diff(datatimeseries_stocks_ADP, differences=1)
+plot.ts(timeseriesdiff1_ADP,main="Data with one difference")
+#Differencing the time series and make it stationary
+timeseriesdiff2_ADP <- diff(datatimeseries_stocks_ADP, differences=2)
+plot.ts(timeseriesdiff2_ADP,main="Data with two differences")
+#Differencing the time series and make it stationary
+timeseriesdiff3_ADP <- diff(datatimeseries_stocks_ADP, differences=3)
+plot.ts(timeseriesdiff3_ADP,main="Data with three differences")
+
+
+#Differencing the time series and make it stationary for NASDAQ.CBOE
+par(mfrow=c(1,4))
+plot.ts(datatimeseries_stocks_CBOE,main="Actual Data")
+timeseriesdiff1_CBOE <-  diff(datatimeseries_stocks_CBOE, differences=1)
+plot.ts(timeseriesdiff1_CBOE,main="Data with one difference")
+#Differencing the time series and make it stationary
+timeseriesdiff2_CBOE <- diff(datatimeseries_stocks_CBOE, differences=2)
+plot.ts(timeseriesdiff2_CBOE,main="Data with two differences")
+#Differencing the time series and make it stationary
+timeseriesdiff3_CBOE <- diff(datatimeseries_stocks_CBOE, differences=3)
+plot.ts(timeseriesdiff3_CBOE,main="Data with three differences")
+
+
+#Differencing the time series and make it stationary for NASDAQ.CSCO
+par(mfrow=c(1,4))
+plot.ts(datatimeseries_stocks_CSCO,main="Actual Data")
+timeseriesdiff1_CSCO <-  diff(datatimeseries_stocks_CSCO, differences=1)
+plot.ts(timeseriesdiff1_CSCO,main="Data with one difference")
+#Differencing the time series and make it stationary
+timeseriesdiff2_CSCO <- diff(datatimeseries_stocks_CSCO, differences=2)
+plot.ts(timeseriesdiff2_CSCO,main="Data with two differences")
+#Differencing the time series and make it stationary
+timeseriesdiff3_CSCO <- diff(datatimeseries_stocks_CSCO, differences=3)
+plot.ts(timeseriesdiff3_CSCO,main="Data with three differences")
+
+
+#Differencing the time series and make it stationary for NASDAQ.EBAY
+par(mfrow=c(1,4))
+plot.ts(datatimeseries_stocks_EBAY,main="Actual Data")
+timeseriesdiff1_EBAY <-  diff(datatimeseries_stocks_EBAY, differences=1)
+plot.ts(timeseriesdiff1_EBAY,main="Data with one difference")
+#Differencing the time series and make it stationary
+timeseriesdiff2_EBAY <- diff(datatimeseries_stocks_EBAY, differences=2)
+plot.ts(timeseriesdiff2_EBAY,main="Data with two differences")
+#Differencing the time series and make it stationary
+timeseriesdiff3_EBAY <- diff(datatimeseries_stocks_EBAY, differences=3)
+plot.ts(timeseriesdiff3_EBAY,main="Data with three differences")
+
+
+#Plotting acf and pacf plots for differenced time series once for NASDAQ.AAPL
+par(mfrow=c(1,2))
+acf(timeseriesdiff1_AAPL, lag.max=20)
+pacf(timeseriesdiff1_AAPL, lag.max=20)
+acf(timeseriesdiff1_AAPL, lag.max=20,plot=F)
+pacf(timeseriesdiff1_AAPL, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series twice for NASDAQ.AAPL
+par(mfrow=c(1,2))
+acf(timeseriesdiff2_AAPL, lag.max=20)
+pacf(timeseriesdiff2_AAPL, lag.max=20)
+acf(timeseriesdiff2_AAPL, lag.max=20,plot=F)
+pacf(timeseriesdiff2_AAPL, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series thrice for NASDAQ.AAPL
+par(mfrow=c(1,2))
+acf(timeseriesdiff3_AAPL, lag.max=20)
+pacf(timeseriesdiff3_AAPL, lag.max=20)
+acf(timeseriesdiff3_AAPL, lag.max=20,plot=F)
+pacf(timeseriesdiff3_AAPL, lag.max=20,plot=F)
+
+
+#Plotting acf and pacf plots for differenced time series once for NASDAQ.ADP
+par(mfrow=c(1,2))
+acf(timeseriesdiff1_ADP, lag.max=20)
+pacf(timeseriesdiff1_ADP, lag.max=20)
+acf(timeseriesdiff1_ADP, lag.max=20,plot=F)
+pacf(timeseriesdiff1_ADP, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series twice for NASDAQ.ADP
+par(mfrow=c(1,2))
+acf(timeseriesdiff2_ADP, lag.max=20)
+pacf(timeseriesdiff2_ADP, lag.max=20)
+acf(timeseriesdiff2_ADP, lag.max=20,plot=F)
+pacf(timeseriesdiff2_ADP, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series thrice for NASDAQ.ADP
+par(mfrow=c(1,2))
+acf(timeseriesdiff3_ADP, lag.max=20)
+pacf(timeseriesdiff3_ADP, lag.max=20)
+acf(timeseriesdiff3_ADP, lag.max=20,plot=F)
+pacf(timeseriesdiff3_ADP, lag.max=20,plot=F)
+
+
+#Plotting acf and pacf plots for differenced time series once for NASDAQ.CBOE
+par(mfrow=c(1,2))
+acf(timeseriesdiff1_CBOE, lag.max=20)
+pacf(timeseriesdiff1_CBOE, lag.max=20)
+acf(timeseriesdiff1_CBOE, lag.max=20,plot=F)
+pacf(timeseriesdiff1_CBOE, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series twice for NASDAQ.CBOE
+par(mfrow=c(1,2))
+acf(timeseriesdiff2_CBOE, lag.max=20)
+pacf(timeseriesdiff2_CBOE, lag.max=20)
+acf(timeseriesdiff2_CBOE, lag.max=20,plot=F)
+pacf(timeseriesdiff2_CBOE, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series thrice for NASDAQ.CBOE
+par(mfrow=c(1,2))
+acf(timeseriesdiff3_CBOE, lag.max=20)
+pacf(timeseriesdiff3_CBOE, lag.max=20)
+acf(timeseriesdiff3_CBOE, lag.max=20,plot=F)
+pacf(timeseriesdiff3_CBOE, lag.max=20,plot=F)
+
+
+#Plotting acf and pacf plots for differenced time series once for NASDAQ.CSCO
+par(mfrow=c(1,2))
+acf(timeseriesdiff1_CSCO, lag.max=20)
+pacf(timeseriesdiff1_CSCO, lag.max=20)
+acf(timeseriesdiff1_CSCO, lag.max=20,plot=F)
+pacf(timeseriesdiff1_CSCO, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series twice for NASDAQ.CSCO
+par(mfrow=c(1,2))
+acf(timeseriesdiff2_CSCO, lag.max=20)
+pacf(timeseriesdiff2_CSCO, lag.max=20)
+acf(timeseriesdiff2_CSCO, lag.max=20,plot=F)
+pacf(timeseriesdiff2_CSCO, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series thrice for NASDAQ.CSCO
+par(mfrow=c(1,2))
+acf(timeseriesdiff3_CSCO, lag.max=20)
+pacf(timeseriesdiff3_CSCO, lag.max=20)
+acf(timeseriesdiff3_CSCO, lag.max=20,plot=F)
+pacf(timeseriesdiff3_CSCO, lag.max=20,plot=F)
+
+
+
+#Plotting acf and pacf plots for differenced time series once for NASDAQ.EBAY
+par(mfrow=c(1,2))
+acf(timeseriesdiff1_EBAY, lag.max=20)
+pacf(timeseriesdiff1_EBAY, lag.max=20)
+acf(timeseriesdiff1_EBAY, lag.max=20,plot=F)
+pacf(timeseriesdiff1_EBAY, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series twice for NASDAQ.EBAY
+par(mfrow=c(1,2))
+acf(timeseriesdiff2_EBAY, lag.max=20)
+pacf(timeseriesdiff2_EBAY, lag.max=20)
+acf(timeseriesdiff2_EBAY, lag.max=20,plot=F)
+pacf(timeseriesdiff2_EBAY, lag.max=20,plot=F)
+
+#Plotting acf and pacf plots for for differenced time series thrice for NASDAQ.EBAY
+par(mfrow=c(1,2))
+acf(timeseriesdiff3_EBAY, lag.max=20)
+pacf(timeseriesdiff3_EBAY, lag.max=20)
+acf(timeseriesdiff3_EBAY, lag.max=20,plot=F)
+pacf(timeseriesdiff3_EBAY, lag.max=20,plot=F)
+
+
+# Fitting the Arima Model by change p,d,q values in order = c(p,d,q)
+
+fit_arima_stocks_AAPL<- arima(datatimeseries_stocks_AAPL, order=c(1,0,1)) 
+fit_arima_stocks_ADP<- arima(datatimeseries_stocks_ADP, order=c(1,0,1)) 
+fit_arima_stocks_CBOE<- arima(datatimeseries_stocks_CBOE, order=c(1,0,1)) 
+fit_arima_stocks_CSCO<- arima(datatimeseries_stocks_CSCO, order=c(1,0,1)) 
+fit_arima_stocks_EBAY<- arima(datatimeseries_stocks_EBAY, order=c(1,0,1)) 
+fit_arima_stocks_AAPL
+fit_arima_stocks_ADP
+fit_arima_stocks_CBOE
+fit_arima_stocks_CSCO
+fit_arima_stocks_EBAY
+
+
+library("forecast") 
+library(forecast)
+
+forecast::forecast(fit_arima_stocks_AAPL,h=4)
+
+summary(fit_arima_stocks_AAPL)
+summary(fit_arima_stocks_ADP)
+summary(fit_arima_stocks_CBOE)
+summary(fit_arima_stocks_CSCO)
+summary(fit_arima_stocks_EBAY)
+forecasts_AAPL = (data.frame(forecast(fit_arima_stocks_AAPL, h=4)))$Point.Forecast
+forecasts_ADP = (data.frame(forecast(fit_arima_stocks_ADP, h=4)))$Point.Forecast
+forecasts_CBOE = (data.frame(forecast(fit_arima_stocks_CBOE, h=4)))$Point.Forecast
+forecasts_CSCO = (data.frame(forecast(fit_arima_stocks_CSCO, h=4)))$Point.Forecast
+forecasts_EBAY = (data.frame(forecast(fit_arima_stocks_EBAY, h=4)))$Point.Forecast
+
+mean(abs(forecasts_AAPL-data_AAPL))  # MAE = 4.45  on test
+mean(abs(forecasts_ADP-data_ADP))
+mean(abs(forecasts_CBOE-data_CBOE))
+mean(abs(forecasts_CSCO-data_CSCO))
+mean(abs(forecasts_EBAY-data_EBAY))
+
+forecasts_AAPL
+forecasts_ADP
+forecasts_CBOE
+forecasts_CSCO
+forecasts_EBAY
